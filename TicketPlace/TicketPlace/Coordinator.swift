@@ -19,15 +19,35 @@ final class Coordinator: ObservableObject {
         homeViewModel = .init(networkService: networkService)
     }
     
-    func navigateToHomeView() -> some View {
+    func createHomeView() -> some View {
         return HomeView(viewModel: homeViewModel)
     }
     
+    func createDetailsView(event: TPEvent) -> some View {
+        return EventDetailsView(event: event)
+    }
+    
+    func createSettingsView() -> some View {
+        EmptyView() // TODO: Fazer a Settings View
+    }
+    
+    func createCreateEventView() -> some View {
+        EmptyView() // TODO: Fazer a Create View
+    }
+    
     func navigateToDetailsView(event: TPEvent) {
-        path.append(event)
+        path.append(ScreenEnum.details(event))
     }
     
     func navigateToCreateEventView() {
-        
+        // TODO: Fazer a navegação para a tela de criar
     }
+    
+    func navigateToSettingsView() {
+        // TODO: Fazer a navegação para a tela de configuração
+    }
+    
+    
 }
+
+

@@ -15,6 +15,7 @@ final class HomeViewModel: ObservableObject {
     @Published var filteredEvents: [TPEvent] = []
     @Published var alertMessage: String? = nil
     @Published var isLoading: Bool = false
+    @Published var username: String? = "Caio" // TODO: Implementar
     
     var isFiltering: Bool {
         !searchText.isEmpty
@@ -49,7 +50,6 @@ final class HomeViewModel: ObservableObject {
 //            alertMessage = "Requisição mal sucedida. Tente novamente mais tarde."
 //        }
     }
-    
     
     func deleteEvent(for indexSet: IndexSet) {
         for index in indexSet {
