@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ReminderEnum: String, CaseIterable {
+enum ReminderEnum: String, CaseIterable, Decodable {
     case fiveMinutes = "5 min Antes"
     case fifteenMinutes = "15 min Antes"
     case thirtyMinutes = "30 min Antes"

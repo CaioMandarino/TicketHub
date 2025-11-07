@@ -39,7 +39,7 @@ final class HomeViewModel: ObservableObject {
         let url: URL = URL(string: "http://localhost:3000/events")!
         let request: URLRequest = .init(url: url)
         
-        try? await Task.sleep(for: .seconds(5))
+//        try? await Task.sleep(for: .seconds(5))
         isLoading = false
         events = MockData.events
         return

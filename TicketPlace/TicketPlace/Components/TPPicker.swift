@@ -29,7 +29,7 @@ struct TPPicker<T: CaseIterable & Hashable>: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: GlobalConfigurations.normalSpacing) {
             Text(title)
             Spacer()
         
