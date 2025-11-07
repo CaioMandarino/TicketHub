@@ -28,6 +28,10 @@ final class HomeViewModel: ObservableObject {
         self.networkService = networkService
         
         observableSearchTextDidChange()
+        
+        Task {
+            await fetchEvents()
+        }
     }
     
     func fetchEvents() async {
@@ -58,6 +62,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func updateEvent(id: UUID,_ newEvent: TPEvent, ) {
+        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
+        
+        events[index] = newEvent
+    }
+    
     
     private func observableSearchTextDidChange() {
         $searchText
@@ -79,50 +89,4 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-}
-
-
-final class MockData {
-    static let events: [TPEvent] = [
-        TPEvent(
-            title: "Bar da 408 Norte",
-            location: "Asa Norte"
-        ),
-
-        TPEvent(
-            title: "Pontão Sunset Bar",
-            location: "Lago Sul"
-        ),
-
-        TPEvent(
-            title: "Feira Gastrô 215 Sul",
-            location: "Asa Sul"
-        ),
-
-        TPEvent(
-            title: "Clube do Choro",
-            location: "Eixo Monumental"
-        ),
-
-        TPEvent(
-            title: "Terraço do Sudoeste",
-            location: "Sudoeste"
-        ),
-
-        TPEvent(
-            title: "Bar do Parque",
-            location: "Parque da Cidade"
-        ),
-
-        TPEvent(
-            title: "Varanda do Guará",
-            location: "Guará"
-        ),
-
-        TPEvent(
-            title: "Armazém Noroeste",
-            location: "Noroeste"
-        )
-
-    ]
 }

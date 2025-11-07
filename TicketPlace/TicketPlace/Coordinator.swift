@@ -24,7 +24,8 @@ final class Coordinator: ObservableObject {
     }
     
     func createDetailsView(event: TPEvent) -> some View {
-        return EventDetailsView(event: event)
+        let viewModel = EventDetailsViewModel(event: event, updateEvent: homeViewModel.updateEvent)
+        return EventDetailsView(viewModel: viewModel)
     }
     
     func createSettingsView() -> some View {

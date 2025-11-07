@@ -9,16 +9,25 @@ import SwiftUI
 
 struct TPTextField: View {
     @Binding var text: String
-    let imageName: String
+    let imageName: String?
     let prompt: Text?
+    
+    init(text: Binding<String>, imageName: String? = nil, prompt: Text? = nil) {
+        self._text = text
+        self.imageName = imageName
+        self.prompt = prompt
+    }
     
     var body: some View {
         HStack(spacing: GlobalConfigurations.normalSpacing) {
-            Image(systemName: imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 30)
-
+            
+            if let imageName {
+                Image(systemName: imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 30)
+            }
+            
             TextField("TextField", text: $text, prompt: prompt )
         }
         .padding()
