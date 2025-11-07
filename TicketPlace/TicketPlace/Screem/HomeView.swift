@@ -24,6 +24,11 @@ struct HomeView: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
+            .background {
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+            }
         }
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer, prompt: Text("Busque um evento..."))
         .navigationTitle(Text("Olá, mundo!"))
@@ -34,11 +39,21 @@ struct HomeView: View {
                 }
             }
         }
+        .task {
+            await viewModel.fetchEvents()
+        }
+        .refreshable {
+            await viewModel.fetchEvents()
+        }
+        .alert("Error", isPresented: .init(value: $viewModel.alertMessage)) {} message: {
+            Text(viewModel.alertMessage ?? "Tente novamente mais tarde")
+        }
+
     }
 }
 
 #Preview {
     NavigationStack {
-        HomeView(viewModel: HomeViewModel())
+        HomeView(viewModel: HomeViewModel(networkService: NetworkService() ))
     }
 }

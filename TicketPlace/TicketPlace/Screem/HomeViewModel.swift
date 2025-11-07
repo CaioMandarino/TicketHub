@@ -6,11 +6,42 @@
 //
 
 import Combine
+import Foundation
 
 @MainActor
 final class HomeViewModel: ObservableObject {
     @Published var searchText: String = ""
-    @Published var events: [TPEvent] = MockData.events
+    @Published var events: [TPEvent] = []
+    @Published var alertMessage: String? = nil
+    @Published var isLoading: Bool = false
+    
+    let networkService: any NetworkServiceProtocol
+    
+    init(networkService: some NetworkServiceProtocol) {
+        self.networkService = networkService
+    }
+    
+    func fetchEvents() async {
+        isLoading = true
+        let url: URL = URL(string: "http://localhost:3000/events")!
+        let request: URLRequest = .init(url: url)
+        
+        try? await Task.sleep(for: .seconds(5))
+        isLoading = false
+        events = MockData.events
+        return
+        
+//        do {
+//            let events = try await networkService.fetchData(Array<TPEvent>.self, from: request)
+//            isLoading = false
+//            self.events = events
+//            
+//        } catch {
+//            isLoading = false
+//            alertMessage = "Requisição mal sucedida. Tente novamente mais tarde."
+//        }
+    }
+    
     
 }
 

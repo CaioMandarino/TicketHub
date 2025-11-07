@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct TPEvent: Identifiable, Hashable {
-    let id = UUID()
+struct TPEvent: Identifiable, Hashable, Decodable {
+    var id = UUID()
     
     var title: String
     var location: String

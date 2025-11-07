@@ -15,7 +15,7 @@ struct TicketPlaceApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                HomeView(viewModel: HomeViewModel())
+                coordinator.navigateToHomeView()
                     .environmentObject(coordinator)
                     .navigationDestination(for: TPEvent.self) { event in
                         EventDetailsView(event: event)
