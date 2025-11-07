@@ -15,11 +15,12 @@ struct HomeView: View {
     var body: some View {
         VStack {
             List {
-                ForEach(viewModel.events) { event in
+                ForEach(viewModel.isFiltering ? viewModel.filteredEvents : viewModel.events) { event in
                     TPListRow(title: event.title, location: event.location) {
                         coordinator.navigateToDetailsView(event: event)
                     }
                 }
+                .onDelete(perform: viewModel.deleteEvent)
                 .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
@@ -29,6 +30,12 @@ struct HomeView: View {
                     ProgressView()
                 }
             }
+        }
+        .overlay(alignment: .bottomTrailing) {
+            TPAddEventButton {
+                coordinator.navigateToCreateEventView()
+            }
+            .padding()
         }
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer, prompt: Text("Busque um evento..."))
         .navigationTitle(Text("Olá, mundo!"))
@@ -48,7 +55,7 @@ struct HomeView: View {
         .alert("Error", isPresented: .init(value: $viewModel.alertMessage)) {} message: {
             Text(viewModel.alertMessage ?? "Tente novamente mais tarde")
         }
-
+        
     }
 }
 

@@ -12,13 +12,21 @@ import Foundation
 final class HomeViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var events: [TPEvent] = []
+    @Published var filteredEvents: [TPEvent] = []
     @Published var alertMessage: String? = nil
     @Published var isLoading: Bool = false
     
-    let networkService: any NetworkServiceProtocol
+    var isFiltering: Bool {
+        !searchText.isEmpty
+    }
+    
+    private let networkService: any NetworkServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
     
     init(networkService: some NetworkServiceProtocol) {
         self.networkService = networkService
+        
+        observableSearchTextDidChange()
     }
     
     func fetchEvents() async {
@@ -43,6 +51,34 @@ final class HomeViewModel: ObservableObject {
     }
     
     
+    func deleteEvent(for indexSet: IndexSet) {
+        for index in indexSet {
+            events.remove(at: index)
+            // TODO: Remover do Backend
+        }
+    }
+    
+    
+    private func observableSearchTextDidChange() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] searchText in
+                guard let self else { return }
+                
+                let term = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                if term.isEmpty {
+                    filteredEvents = events
+                } else {
+                    filteredEvents = events.filter { event in
+                        event.title.localizedCaseInsensitiveContains(term) || (event.location.localizedCaseInsensitiveContains(term))
+                    }
+                }
+                
+            }
+            .store(in: &cancellables)
+    }
 }
 
 

@@ -27,4 +27,7 @@ final class Coordinator: ObservableObject {
         path.append(event)
     }
     
+    func navigateToCreateEventView() {
+        
+    }
 }
