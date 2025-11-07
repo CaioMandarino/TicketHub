@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct TicketPlaceApp: App {
+    
+    @StateObject private var coordinator: Coordinator = .init()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $coordinator.path) {
+                HomeView(viewModel: HomeViewModel())
+                    .environmentObject(coordinator)
+                    .navigationDestination(for: TPEvent.self) { event in
+                        EventDetailsView(event: event)
+                    }
+            }
         }
     }
 }
