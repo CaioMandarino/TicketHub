@@ -61,8 +61,11 @@ final class HomeViewModel: ObservableObject {
     
     func deleteEvent(for indexSet: IndexSet) {
         for index in indexSet {
-            events.remove(at: index)
-            // TODO: Remover do Backend
+            let event = events.remove(at: index)
+            
+            Task {
+                try await networkService.deleteEvent(id: event.id)
+            }
         }
     }
     
@@ -98,6 +101,10 @@ extension HomeViewModel: UpdateAndDeleteEventProtocol {
         guard let index = events.firstIndex(where: { $0.id == id }) else { return }
 
         events.remove(at: index)
+        
+        Task {
+            try await networkService.deleteEvent(id: id)
+        }
     }
     
     func updateEvent(for id: String, with newEvent: TPEvent) {
@@ -105,6 +112,9 @@ extension HomeViewModel: UpdateAndDeleteEventProtocol {
         
         events[index] = newEvent
         
+        Task {
+            try await networkService.updateEvent(for: newEvent)
+        }
     }
     
     

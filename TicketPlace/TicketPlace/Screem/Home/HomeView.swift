@@ -28,6 +28,11 @@ struct HomeView: View {
             .background {
                 if viewModel.isLoading {
                     ProgressView()
+                } else if viewModel.events.isEmpty {
+                    ContentUnavailableView(
+                        "Clique no + para adicionar um evento!",
+                        systemImage: "calendar.badge.plus"
+                    )
                 }
             }
         }

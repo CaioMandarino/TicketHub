@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CreateEventView: View {
+    @EnvironmentObject private var coordinator: Coordinator
     @ObservedObject var viewModel: CreateEventViewModel
     
     var body: some View {
@@ -50,10 +51,15 @@ struct CreateEventView: View {
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Salvar", systemImage: "square.and.arrow.down", role: .confirm) {
                         Task {
-                            await viewModel.createEvent()
+                            if await viewModel.createEvent() {
+                                coordinator.navigateBack()
+                            }
                         }
                     }
                 }
+            }
+            .alert("Error", isPresented: .init(value: $viewModel.alertMessage)) {} message: {
+                Text(viewModel.alertMessage ?? "Tente novamente mais tarde")
             }
             
             

@@ -36,7 +36,7 @@ struct TPEvent: Identifiable, Hashable {
     }
     
     init() {
-        self.init(id: UUID().uuidString, title: "Bar", location: "Asa Norte", date: .now, details: "Muito Legal!", category: .conference)
+        self.init(id: UUID().uuidString, title: "", location: "", date: .now.addingTimeInterval(3600), details: "")
     }
     
     func convertToEventData() throws -> EventData {

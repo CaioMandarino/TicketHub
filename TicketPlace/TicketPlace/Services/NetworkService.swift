@@ -14,7 +14,7 @@ actor NetworkService: NetworkServiceProtocol {
     @MainActor
     func createUser(username: String, password: String, email: String) async throws {
         
-        let url = baseURL + EndpointEnum.register.rawValue
+        let url = baseURL + EndpointEnum.register.path
         var request = URLRequest(url: URL(string: url)!)
     
         let encoder = JSONEncoder()
@@ -38,7 +38,7 @@ actor NetworkService: NetworkServiceProtocol {
     @MainActor
     func login(email: String, password: String) async throws {
         
-        let url = baseURL + EndpointEnum.login.rawValue
+        let url = baseURL + EndpointEnum.login.path
         var request = URLRequest(url: URL(string: url)!)
         
         request.httpMethod = HTTPMethodEnum.post.rawValue
@@ -72,14 +72,15 @@ actor NetworkService: NetworkServiceProtocol {
         try await get(Array<EventsResponse>.self, for: .events)
     }
     
+    @MainActor
     private func get<T: Decodable>(_ type: T.Type, for endpoint: EndpointEnum) async throws -> T {
-        guard let url = URL(string: baseURL + endpoint.rawValue) else {
+        guard let url = URL(string: baseURL + endpoint.path) else {
             throw URLError(.badURL)
         }
         
         var request = URLRequest(url: url)
         
-        guard let token = try? await KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
             throw URLError(.userAuthenticationRequired)
         }
         
@@ -111,7 +112,7 @@ actor NetworkService: NetworkServiceProtocol {
     
     @MainActor
     func createEvent(for event: TPEvent) async throws {
-        let url = baseURL + EndpointEnum.newEvent.rawValue
+        let url = baseURL + EndpointEnum.newEvent.path
         var request = URLRequest(url: URL(string: url)!)
     
         let encoder = JSONEncoder()
@@ -128,6 +129,54 @@ actor NetworkService: NetworkServiceProtocol {
         request.httpMethod = HTTPMethodEnum.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    
+    @MainActor
+    func updateEvent(for event: TPEvent) async throws {
+        let url = baseURL + EndpointEnum.updateEvent(id: event.id).path
+        var request = URLRequest(url: URL(string: url)!)
+    
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        encoder.dateEncodingStrategy = .iso8601
+        
+        let eventData = try event.convertToEventData()
+        let jsonData = try encoder.encode(eventData)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        request.httpMethod = HTTPMethodEnum.put.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    @MainActor
+    func deleteEvent(id: String) async throws {
+        let url = baseURL + EndpointEnum.deleteEvent(id: id).path
+        var request = URLRequest(url: URL(string: url)!)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        request.httpMethod = HTTPMethodEnum.delete.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let (_, response) = try await URLSession.shared.data(for: request)
