@@ -21,6 +21,7 @@ final class HomeViewModel: ObservableObject {
         !searchText.isEmpty
     }
     
+    weak var coordinator: Coordinator? = nil
     private var userInfo: UserResponse? = nil
     private let networkService: any NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -33,20 +34,29 @@ final class HomeViewModel: ObservableObject {
     
     func fetchUser() async {
         do {
-            self.userInfo = try await networkService.userInfo()
+            self.userInfo = try await networkService.getUserInfo()
             username = userInfo?.name
             
         } catch URLError.userAuthenticationRequired {
-            print("Problemas ao buscar informações do usuário")
-            try? KeychainService.delete(account: KeychainKeysEnum.accessToken)
-            // TODO: Fazer logout
+            print("Problemas na autenticação do usuário")
+            logout()
+
         } catch {
             print("Problemas ao buscar informações do usuário")
         }
     }
     
     func fetchEvents() async {
-        
+        do {
+            let events = try await networkService.getEvents()
+            self.events = events.map { $0.convertToEvent() }
+            
+        } catch URLError.userAuthenticationRequired {
+            print("Problemas na autenticação do usuário")
+            logout()
+        } catch {
+            print("Problemas ao buscar informações do usuário")
+        }
     }
     
     func deleteEvent(for indexSet: IndexSet) {
@@ -75,6 +85,11 @@ final class HomeViewModel: ObservableObject {
                 
             }
             .store(in: &cancellables)
+    }
+    
+    private func logout() {
+        try? KeychainService.delete(account: KeychainKeysEnum.accessToken)
+        coordinator?.navigateToLoginView()
     }
 }
 

@@ -16,6 +16,7 @@ struct TPEvent: Identifiable, Hashable, Decodable {
     var details: String
     var reminder: ReminderEnum?
     var category: CategoriesEnum?
+
 }
 
 extension TPEvent {

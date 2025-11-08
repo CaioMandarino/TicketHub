@@ -25,6 +25,8 @@ final class Coordinator: ObservableObject {
         } else {
             showLogin = true
         }
+        
+        homeViewModel.coordinator = self
     }
     
     func createHomeView() -> some View {
@@ -49,7 +51,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createCreateEventView() -> some View {
-        EmptyView() // TODO: Fazer a Create View
+        CreateEventView()
     }
     
     func navigateToDetailsView(event: TPEvent) {
@@ -57,7 +59,7 @@ final class Coordinator: ObservableObject {
     }
     
     func navigateToCreateEventView() {
-        // TODO: Fazer a navegação para a tela de criar
+        path.append(ScreenEnum.createEvent)
     }
     
     func navigateToSettingsView() {
@@ -71,6 +73,11 @@ final class Coordinator: ObservableObject {
     func navigateToHomeView() {
         path.removeLast(path.count)
         showLogin = false
+    }
+    
+    func navigateToLoginView() {
+        path.removeLast(path.count)
+        showLogin = true
     }
     
     func navigateBack() {

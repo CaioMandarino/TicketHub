@@ -63,11 +63,22 @@ actor NetworkService: NetworkServiceProtocol {
     }
     
     @MainActor
-    func userInfo() async throws -> UserResponse {
-        let url = baseURL + EndpointEnum.userInfo.rawValue
-        var request = URLRequest(url: URL(string: url)!)
+    func getUserInfo() async throws -> UserResponse {
+        try await get(UserResponse.self, for: .userInfo)
+    }
+    
+    func getEvents() async throws -> [EventsResponse] {
+        try await get(Array<EventsResponse>.self, for: .events)
+    }
+    
+    private func get<T: Decodable>(_ type: T.Type, for endpoint: EndpointEnum) async throws -> T {
+        guard let url = URL(string: baseURL + endpoint.rawValue) else {
+            throw URLError(.badURL)
+        }
         
-        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+        var request = URLRequest(url: url)
+        
+        guard let token = try? await KeychainService.read(account: KeychainKeysEnum.accessToken) else {
             throw URLError(.userAuthenticationRequired)
         }
         
@@ -83,8 +94,8 @@ actor NetworkService: NetworkServiceProtocol {
             }
         }
         
-        let user = try JSONDecoder().decode(UserResponse.self, from: data)
+        let element = try JSONDecoder().decode(type, from: data)
         
-        return user
+        return element
     }
 }
