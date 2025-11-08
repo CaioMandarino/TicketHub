@@ -9,4 +9,6 @@ import Foundation
 
 enum EndpointEnum: String {
     case events = "events"
+    case register = "register"
+    case login = "login"
 }

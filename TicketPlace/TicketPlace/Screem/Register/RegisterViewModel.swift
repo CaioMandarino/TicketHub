@@ -6,11 +6,12 @@
 //
 
 import Combine
+import Foundation
 
 final class RegisterViewModel: ObservableObject {
-    @Published var username: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var username: String = "user"
+    @Published var email: String = "user@gmail.com"
+    @Published var password: String = "1234567890"
     
     private var networkService: any NetworkServiceProtocol
     
@@ -18,11 +19,21 @@ final class RegisterViewModel: ObservableObject {
         self.networkService = networkService
     }
     
-    func createAccount() -> Bool {
+    func createAccount() async -> Bool {
         guard !username.isEmpty || !email.isEmpty || !password.isEmpty else {
             return false
         }
         
-        return true
+//        let user = User(email: password, password: email, nomeCompleto: username)
+        
+        do {
+            try await networkService.createUser(username: username, password: password, email: email)
+                        
+            return true
+        } catch {
+            print("Problemas ao criar a conta")
+            return false
+        }
     }
 }
+

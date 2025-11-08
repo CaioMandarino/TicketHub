@@ -7,18 +7,31 @@
 
 import Combine
 
+@MainActor
 final class LoginViewModel: ObservableObject {
     
-    @Published var username: String = ""
+    @Published var email: String = ""
     @Published var password: String = ""
+    @Published var saveCredentials: Bool = false
+    
     private let networkService: any NetworkServiceProtocol
     
     init(networkService: some NetworkServiceProtocol) {
         self.networkService = networkService
     }
     
-    func login() {
-        guard !username.isEmpty && !password.isEmpty else { return }
+    func login() async -> Bool {
+        guard !email.isEmpty && !password.isEmpty else { return false }
+        
+        do {
+            try await networkService.login(email: email, password: password)
+            let _ = try KeychainService.read(account: "access_token")
+            
+            return true
+            
+        } catch {
+            return false
+        }
     }
     
 }

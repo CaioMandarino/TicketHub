@@ -25,13 +25,15 @@ struct RegisterView: View {
             
             TPTextField(text: $viewModel.username, imageName: "person.fill", prompt: Text("Digite seu nome de usuário"))
             
-            TPTextField(text: $viewModel.username, imageName: "envelope.fill", prompt: Text("Digite seu email"))
+            TPTextField(text: $viewModel.email, imageName: "envelope.fill", prompt: Text("Digite seu email"))
             
             TPPasswordTextField(text: $viewModel.password, imageName: "lock.fill", prompt: Text("Digite sua senha"))
 
             TPButton(title: "Criar Conta") {
-                if viewModel.createAccount() {
-                    coordinator.navigateToHomeView()
+                Task {
+                    if await viewModel.createAccount() {
+                        coordinator.navigateToHomeView()
+                    }
                 }
             }
             .padding(GlobalConfigurations.largePadding)

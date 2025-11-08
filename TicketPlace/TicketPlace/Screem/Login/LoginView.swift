@@ -19,13 +19,16 @@ struct LoginView: View {
                 .padding(.vertical, GlobalConfigurations.normalPadding)
             
             
-            TPTextField(text: $viewModel.username, imageName: "person.fill", prompt: Text("Digite seu nome de usuário"))
+            TPTextField(text: $viewModel.email, imageName: "envelope.fill", prompt: Text("Digite seu email"))
             
             TPPasswordTextField(text: $viewModel.password, imageName: "lock.fill", prompt: Text("Digite sua senha"))
             
             TPButton(title: "Entrar") {
-                coordinator.navigateToHomeView()
-//                viewModel.login()
+                Task {
+                    if await viewModel.login() {
+                        coordinator.navigateToHomeView()
+                    }
+                }
             }
             .padding(GlobalConfigurations.largePadding)
             
