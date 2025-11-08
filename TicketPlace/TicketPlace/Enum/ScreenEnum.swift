@@ -12,6 +12,8 @@ enum ScreenEnum: Hashable {
     case details(TPEvent)
     case createEvent
     case settings
+    case login
+    case register
     
     @ViewBuilder
     func createView(with coordinate: Coordinator) -> some View {
@@ -24,6 +26,10 @@ enum ScreenEnum: Hashable {
             coordinate.createSettingsView()
         case .details(let event):
             coordinate.createDetailsView(event: event)
+        case .login:
+            coordinate.createLoginView()
+        case .register:
+            coordinate.createRegisterView()
         }
     }
     

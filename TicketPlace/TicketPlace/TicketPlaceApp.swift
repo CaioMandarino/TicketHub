@@ -15,10 +15,16 @@ struct TicketPlaceApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                coordinator.createHomeView()
-                    .navigationDestination(for: ScreenEnum.self) { screen in
-                        screen.createView(with: coordinator)
+                Group {
+                    if coordinator.showLogin {
+                        coordinator.createLoginView()
+                    } else {
+                        coordinator.createHomeView()
                     }
+                }
+                .navigationDestination(for: ScreenEnum.self) { screen in
+                    screen.createView(with: coordinator)
+                }
             }
             .environmentObject(coordinator)
         }

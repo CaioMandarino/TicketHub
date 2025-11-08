@@ -11,6 +11,8 @@ import Combine
 final class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
+    @Published var showLogin: Bool = true
+    
     private let homeViewModel: HomeViewModel
     private let networkService: any NetworkServiceProtocol
     
@@ -26,6 +28,14 @@ final class Coordinator: ObservableObject {
     func createDetailsView(event: TPEvent) -> some View {
         let viewModel = EventDetailsViewModel(event: event, service: homeViewModel)
         return EventDetailsView(viewModel: viewModel)
+    }
+    
+    func createLoginView() -> some View {
+        return LoginView(viewModel: LoginViewModel(networkService: networkService))
+    }
+    
+    func createRegisterView() -> some View {
+        EmptyView() 
     }
     
     func createSettingsView() -> some View {
@@ -46,6 +56,14 @@ final class Coordinator: ObservableObject {
     
     func navigateToSettingsView() {
         // TODO: Fazer a navegação para a tela de configuração
+    }
+    
+    func navigateToCreateAccountView() {
+        // TODO: Implementar
+    }
+    
+    func navigateToHomeView() {
+        showLogin = false
     }
     
     func navigateBack() {

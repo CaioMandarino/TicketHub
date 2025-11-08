@@ -5,4 +5,14 @@
 //  Created by Caio Mandarino on 08/11/25.
 //
 
-import Foundation
+import SwiftUI
+
+struct CreateEventView: View {
+    var body: some View {
+        Text("Hello, world!")
+    }
+}
+
+#Preview {
+    CreateEventView()
+}
