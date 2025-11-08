@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EventDetailsView: View {
     @ObservedObject var viewModel: EventDetailsViewModel
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         ScrollView {
@@ -53,7 +54,8 @@ struct EventDetailsView: View {
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Delete", systemImage: "trash", role: .destructive) {
-                        
+                        viewModel.deleteEvent()
+                        coordinator.navigateBack()
                     }
                 }
             }
@@ -63,8 +65,8 @@ struct EventDetailsView: View {
 }
 
 #Preview {
-    let viewModel = EventDetailsViewModel(event: MockData.events.first!) { _ , _ in
-    }
+    let viewModel = EventDetailsViewModel(event: MockData.events.first!, service: HomeViewModel(networkService: NetworkService()))
+    
     NavigationStack {
         EventDetailsView(viewModel: viewModel)
     }

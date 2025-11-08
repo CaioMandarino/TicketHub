@@ -24,7 +24,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createDetailsView(event: TPEvent) -> some View {
-        let viewModel = EventDetailsViewModel(event: event, updateEvent: homeViewModel.updateEvent)
+        let viewModel = EventDetailsViewModel(event: event, service: homeViewModel)
         return EventDetailsView(viewModel: viewModel)
     }
     
@@ -48,7 +48,9 @@ final class Coordinator: ObservableObject {
         // TODO: Fazer a navegação para a tela de configuração
     }
     
-    
+    func navigateBack() {
+        path.removeLast()
+    }
 }
 
 

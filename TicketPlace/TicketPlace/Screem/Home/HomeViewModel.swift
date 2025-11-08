@@ -62,13 +62,6 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func updateEvent(id: UUID,_ newEvent: TPEvent, ) {
-        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
-        
-        events[index] = newEvent
-    }
-    
-    
     private func observableSearchTextDidChange() {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
@@ -89,4 +82,20 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+}
+
+extension HomeViewModel: UpdateAndDeleteEventProtocol {
+    func deleteEvent(for id: UUID) {
+        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
+
+        events.remove(at: index)
+    }
+    
+    func updateEvent(for id: UUID, with newEvent: TPEvent) {
+        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
+        
+        events[index] = newEvent
+    }
+    
+    
 }

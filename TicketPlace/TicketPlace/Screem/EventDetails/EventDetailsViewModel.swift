@@ -10,14 +10,22 @@ import Foundation
 
 final class EventDetailsViewModel: ObservableObject {
     @Published var event: TPEvent
-    let updateEvent: (UUID, TPEvent) -> Void
+    private let service: any UpdateAndDeleteEventProtocol
+    private var isDeleted: Bool = false
     
-    init(event: TPEvent, updateEvent: @escaping (UUID, TPEvent) -> Void) {
+    init(event: TPEvent, service: some UpdateAndDeleteEventProtocol) {
         self.event = event
-        self.updateEvent = updateEvent
+        self.service = service
     }
     
     func saveEvent() {
-        updateEvent(event.id, event)
+        if isDeleted == false {
+            service.updateEvent(for: event.id, with: event)
+        }
+    }
+    
+    func deleteEvent() {
+        isDeleted = true
+        service.deleteEvent(for: event.id)
     }
 }

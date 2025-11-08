@@ -16,11 +16,11 @@ struct TicketPlaceApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
                 coordinator.createHomeView()
-                    .environmentObject(coordinator)
                     .navigationDestination(for: ScreenEnum.self) { screen in
                         screen.createView(with: coordinator)
                     }
             }
+            .environmentObject(coordinator)
         }
     }
 }
