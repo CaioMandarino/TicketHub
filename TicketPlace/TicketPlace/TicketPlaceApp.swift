@@ -25,11 +25,6 @@ struct TicketPlaceApp: App {
                 .navigationDestination(for: ScreenEnum.self) { screen in
                     screen.createView(with: coordinator)
                 }
-                .onAppear {
-                    if let _ = try? KeychainService.read(account: "access_token") {
-                        coordinator.navigateToHomeView()
-                    }
-                }
             }
             .environmentObject(coordinator)
         }

@@ -11,7 +11,7 @@ import Combine
 final class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
-    @Published var showLogin: Bool = true
+    @Published var showLogin: Bool
     
     private let homeViewModel: HomeViewModel
     private let networkService: any NetworkServiceProtocol
@@ -19,6 +19,12 @@ final class Coordinator: ObservableObject {
     init() {
         networkService = NetworkService()
         homeViewModel = .init(networkService: networkService)
+        
+        if let _ = try? KeychainService.read(account: KeychainKeysEnum.accessToken) {
+            showLogin = false
+        } else {
+            showLogin = true
+        }
     }
     
     func createHomeView() -> some View {

@@ -27,4 +27,5 @@ protocol NetworkServiceProtocol: Actor {
     
     func createUser(username: String, password: String, email: String) async throws
     func login(email: String, password: String) async throws
+    func userInfo() async throws -> UserResponse 
 }

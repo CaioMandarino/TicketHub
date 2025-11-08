@@ -46,6 +46,15 @@ struct HomeView: View {
                 }
             }
         }
+        .task {
+            Task {
+                await viewModel.fetchUser()
+            }
+            
+            Task {
+                await viewModel.fetchEvents()
+            }
+        }
         .refreshable {
             await viewModel.fetchEvents()
         }

@@ -15,12 +15,13 @@ final class HomeViewModel: ObservableObject {
     @Published var filteredEvents: [TPEvent] = []
     @Published var alertMessage: String? = nil
     @Published var isLoading: Bool = false
-    @Published var username: String? = "Caio" // TODO: Implementar
+    @Published var username: String? = nil
     
     var isFiltering: Bool {
         !searchText.isEmpty
     }
     
+    private var userInfo: UserResponse? = nil
     private let networkService: any NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
@@ -28,31 +29,24 @@ final class HomeViewModel: ObservableObject {
         self.networkService = networkService
         
         observableSearchTextDidChange()
-        
-        Task {
-            await fetchEvents()
+    }
+    
+    func fetchUser() async {
+        do {
+            self.userInfo = try await networkService.userInfo()
+            username = userInfo?.name
+            
+        } catch URLError.userAuthenticationRequired {
+            print("Problemas ao buscar informações do usuário")
+            try? KeychainService.delete(account: KeychainKeysEnum.accessToken)
+            // TODO: Fazer logout
+        } catch {
+            print("Problemas ao buscar informações do usuário")
         }
     }
     
     func fetchEvents() async {
-        isLoading = true
-        let url: URL = URL(string: "http://localhost:8000/events")!
-        let request: URLRequest = .init(url: url)
         
-//        try? await Task.sleep(for: .seconds(5))
-        isLoading = false
-        events = MockData.events
-        return
-        
-//        do {
-//            let events = try await networkService.fetchData(Array<TPEvent>.self, from: request)
-//            isLoading = false
-//            self.events = events
-//            
-//        } catch {
-//            isLoading = false
-//            alertMessage = "Requisição mal sucedida. Tente novamente mais tarde."
-//        }
     }
     
     func deleteEvent(for indexSet: IndexSet) {
