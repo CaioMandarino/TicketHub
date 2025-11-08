@@ -44,9 +44,10 @@ struct TPPicker<T: CaseIterable & Hashable>: View {
                 }
             } currentValueLabel: {
                 Text(selection.map(label) ?? noneText)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
             }
             .tint(Color.primary)
-            .pickerStyle(.menu)
         }
         .padding()
         .background(

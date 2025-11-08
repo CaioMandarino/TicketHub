@@ -36,7 +36,7 @@ final class HomeViewModel: ObservableObject {
     
     func fetchEvents() async {
         isLoading = true
-        let url: URL = URL(string: "http://localhost:3000/events")!
+        let url: URL = URL(string: "http://localhost:8000/events")!
         let request: URLRequest = .init(url: url)
         
 //        try? await Task.sleep(for: .seconds(5))

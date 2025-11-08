@@ -8,8 +8,19 @@
 import Foundation
 
 protocol NetworkServiceProtocol: Actor {
-    func fetchData<T: Decodable>(_ type: T.Type, from request: URLRequest) async throws -> T
+    func fetchData<T: Decodable, S: Encodable>(
+        _ type: T.Type,
+        from endpoint: EndpointEnum,
+        method httpMethod: HTTPMethodEnum,
+        body: S?
+    ) async throws -> T
     
-    func fetchData<T: Decodable>(_ type: T.Type, from request: URLRequest, with decoder: JSONDecoder) async throws -> T
-
+    func fetchData<T: Decodable, S: Encodable>(
+        _ type: T.Type,
+        from endpoint: EndpointEnum,
+        method httpMethod: HTTPMethodEnum,
+        body: S?,
+        decoder: JSONDecoder,
+        encoding: JSONEncoder
+    ) async throws -> T
 }

@@ -10,9 +10,8 @@ import Foundation
 enum CategoriesEnum: String, CaseIterable, Decodable {
     case show = "Show"
     case cinema = "Cinema"
-    case aviationTravel = "Viagem Aérea"
-    case busTravel = "Viagem de Ônibus"
+    case travel = "Viagem"
     case theater = "Teatro"
-    case sportingEvent = "Evento Esportivo"
+    case sportingEvent = "Esportivo"
     case conference = "Conferência"
 }

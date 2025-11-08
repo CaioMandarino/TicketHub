@@ -11,6 +11,8 @@ struct EventDetailsView: View {
     @ObservedObject var viewModel: EventDetailsViewModel
     @EnvironmentObject private var coordinator: Coordinator
     
+    @State private var showDeleteDialog = false
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: GlobalConfigurations.normalSpacing) {
@@ -49,16 +51,29 @@ struct EventDetailsView: View {
             .navigationTitle(Text(viewModel.event.title))
             .padding(.horizontal)
             .onDisappear {
-                viewModel.saveEvent()
+                if !viewModel.isDeleted {
+                    viewModel.saveEvent()
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Delete", systemImage: "trash", role: .destructive) {
-                        viewModel.deleteEvent()
-                        coordinator.navigateBack()
+                        showDeleteDialog = true
                     }
                 }
             }
+            .confirmationDialog(
+                "Deletar Evento",
+                isPresented: $showDeleteDialog,
+                titleVisibility: .visible
+            ) {
+                Button("Deletar", role: .destructive) {
+                    viewModel.deleteEvent()
+                    coordinator.navigateBack()
+                }
+            }
+            
+            
         }
         .scrollIndicators(.hidden)
     }

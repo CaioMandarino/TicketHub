@@ -10,8 +10,9 @@ import Foundation
 
 final class EventDetailsViewModel: ObservableObject {
     @Published var event: TPEvent
+    
     private let service: any UpdateAndDeleteEventProtocol
-    private var isDeleted: Bool = false
+    var isDeleted: Bool = false
     
     init(event: TPEvent, service: some UpdateAndDeleteEventProtocol) {
         self.event = event
@@ -19,9 +20,9 @@ final class EventDetailsViewModel: ObservableObject {
     }
     
     func saveEvent() {
-        if isDeleted == false {
-            service.updateEvent(for: event.id, with: event)
-        }
+        guard isDeleted == false else { return }
+        
+        service.updateEvent(for: event.id, with: event)
     }
     
     func deleteEvent() {

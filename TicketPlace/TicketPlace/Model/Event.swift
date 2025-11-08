@@ -51,7 +51,7 @@ final class MockData {
             location: "Asa Norte",
             date: randomDate(),
             details: "Happy hour com música ao vivo (samba/MPB). Promoção de chope até 20h. Área externa pet-friendly.",
-            category: .aviationTravel
+            category: .travel
         ),
         TPEvent(
             title: "Pontão Sunset Bar",
@@ -65,7 +65,7 @@ final class MockData {
             location: "Asa Sul",
             date: randomDate(),
             details: "Feira de street food com 20+ expositores, opções veganas, mesas compartilhadas e música ambiente.",
-            category: .busTravel
+            category: .travel
         ),
         TPEvent(
             title: "Clube do Choro",
