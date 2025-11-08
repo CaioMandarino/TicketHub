@@ -20,7 +20,9 @@ final class Coordinator: ObservableObject {
         networkService = NetworkService()
         homeViewModel = .init(networkService: networkService)
         
-        if let _ = try? KeychainService.read(account: KeychainKeysEnum.accessToken) {
+        let stayLogin = UserDefaults.standard.bool(forKey: KeychainKeysEnum.stayLoggedIn)
+        
+        if let _ = try? KeychainService.read(account: KeychainKeysEnum.accessToken), stayLogin {
             showLogin = false
         } else {
             showLogin = true

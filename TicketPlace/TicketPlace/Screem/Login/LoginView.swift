@@ -12,16 +12,20 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
-        VStack(spacing: GlobalConfigurations.normalSpacing) {
+        VStack(alignment: .leading, spacing: GlobalConfigurations.normalSpacing) {
             Text("Ticket Hub")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
                 .padding(.vertical, GlobalConfigurations.normalPadding)
+                .frame(maxWidth: .infinity)
             
             
             TPTextField(text: $viewModel.email, imageName: "envelope.fill", prompt: Text("Digite seu email"))
             
             TPPasswordTextField(text: $viewModel.password, imageName: "lock.fill", prompt: Text("Digite sua senha"))
+            
+            TPStayLoginButton()
+                .padding(.horizontal)
             
             TPButton(title: "Entrar") {
                 Task {
@@ -39,6 +43,7 @@ struct LoginView: View {
                 .onTapGesture {
                     coordinator.navigateToRegisterView()
                 }
+                .frame(maxWidth: .infinity)
             
         }
         .padding(GlobalConfigurations.normalPadding)

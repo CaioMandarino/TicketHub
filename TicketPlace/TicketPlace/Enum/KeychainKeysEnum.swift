@@ -9,4 +9,5 @@ import Foundation
 
 enum KeychainKeysEnum {
     static let accessToken = "access_token"
+    static let stayLoggedIn = "stay_logged_in"
 }
