@@ -35,7 +35,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createRegisterView() -> some View {
-        EmptyView() 
+        return RegisterView(viewModel: RegisterViewModel(networkService: networkService))
     }
     
     func createSettingsView() -> some View {
@@ -58,11 +58,12 @@ final class Coordinator: ObservableObject {
         // TODO: Fazer a navegação para a tela de configuração
     }
     
-    func navigateToCreateAccountView() {
-        // TODO: Implementar
+    func navigateToRegisterView() {
+        path.append(ScreenEnum.register)
     }
     
     func navigateToHomeView() {
+        path.removeLast(path.count)
         showLogin = false
     }
     

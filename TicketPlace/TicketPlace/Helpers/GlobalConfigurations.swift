@@ -10,7 +10,7 @@ import Foundation
 enum GlobalConfigurations {
     static var normalSpacing: CGFloat { 16 }
     
-    static var largeSpacing: CGFloat { 24 }
+    static var largePadding: CGFloat { 24 }
     static var normalPadding: CGFloat { 16 }
     static var smallPadding: CGFloat { 8 }
 }

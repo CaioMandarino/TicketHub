@@ -27,14 +27,14 @@ struct LoginView: View {
                 coordinator.navigateToHomeView()
 //                viewModel.login()
             }
-            .padding(GlobalConfigurations.largeSpacing)
+            .padding(GlobalConfigurations.largePadding)
             
             Text("Ainda não tem uma conta?")
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .padding(.top, GlobalConfigurations.smallPadding)
                 .onTapGesture {
-                    coordinator.navigateToCreateAccountView()
+                    coordinator.navigateToRegisterView()
                 }
             
         }

@@ -37,7 +37,7 @@ struct HomeView: View {
             }
             .padding()
         }
-        .searchable(text: $viewModel.searchText, placement: .automatic, prompt: Text("Busque um evento..."))
+        .searchable(text: $viewModel.searchText, prompt: Text("Busque um evento..."))
         .navigationTitle(Text("Olá, \(viewModel.username ?? "Desconhecido")"))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

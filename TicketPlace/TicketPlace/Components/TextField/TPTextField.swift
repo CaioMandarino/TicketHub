@@ -25,7 +25,7 @@ struct TPTextField: View {
                 Image(systemName: imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 30)
+                    .frame(maxWidth: 30, maxHeight: 30)
             }
             
             TextField("TextField", text: $text, prompt: prompt )
