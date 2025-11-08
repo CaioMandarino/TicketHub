@@ -55,7 +55,7 @@ final class HomeViewModel: ObservableObject {
             print("Problemas na autenticação do usuário")
             logout()
         } catch {
-            print("Problemas ao buscar informações do usuário")
+            print("Problemas ao buscar eventos")
         }
     }
     
@@ -94,16 +94,17 @@ final class HomeViewModel: ObservableObject {
 }
 
 extension HomeViewModel: UpdateAndDeleteEventProtocol {
-    func deleteEvent(for id: UUID) {
+    func deleteEvent(for id: String) {
         guard let index = events.firstIndex(where: { $0.id == id }) else { return }
 
         events.remove(at: index)
     }
     
-    func updateEvent(for id: UUID, with newEvent: TPEvent) {
+    func updateEvent(for id: String, with newEvent: TPEvent) {
         guard let index = events.firstIndex(where: { $0.id == id }) else { return }
         
         events[index] = newEvent
+        
     }
     
     

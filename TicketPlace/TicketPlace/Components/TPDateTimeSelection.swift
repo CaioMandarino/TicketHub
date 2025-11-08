@@ -29,7 +29,7 @@ struct TPDateTimeSelection: View {
         VStack(spacing: 0) {
             HStack {
                 Image(systemName: "calendar")
-                DatePicker("Data", selection: $date, displayedComponents: .date)
+                DatePicker("Data", selection: $date, in: Date().addingTimeInterval(3600)..., displayedComponents: .date)
             }
             .padding()
             .background {

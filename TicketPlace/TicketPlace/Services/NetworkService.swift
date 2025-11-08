@@ -66,7 +66,8 @@ actor NetworkService: NetworkServiceProtocol {
     func getUserInfo() async throws -> UserResponse {
         try await get(UserResponse.self, for: .userInfo)
     }
-    
+
+    @MainActor
     func getEvents() async throws -> [EventsResponse] {
         try await get(Array<EventsResponse>.self, for: .events)
     }
@@ -94,8 +95,45 @@ actor NetworkService: NetworkServiceProtocol {
             }
         }
         
-        let element = try JSONDecoder().decode(type, from: data)
+        let decoder = JSONDecoder()
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        
+        let element = try decoder.decode(type, from: data)
         
         return element
+    }
+    
+    @MainActor
+    func createEvent(for event: TPEvent) async throws {
+        let url = baseURL + EndpointEnum.newEvent.rawValue
+        var request = URLRequest(url: URL(string: url)!)
+    
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        encoder.dateEncodingStrategy = .iso8601
+        
+        let eventData = try event.convertToEventData()
+        let jsonData = try encoder.encode(eventData)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        request.httpMethod = HTTPMethodEnum.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
     }
 }

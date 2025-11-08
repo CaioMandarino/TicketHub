@@ -51,7 +51,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createCreateEventView() -> some View {
-        CreateEventView()
+        CreateEventView(viewModel: CreateEventViewModel(networkService: networkService))
     }
     
     func navigateToDetailsView(event: TPEvent) {

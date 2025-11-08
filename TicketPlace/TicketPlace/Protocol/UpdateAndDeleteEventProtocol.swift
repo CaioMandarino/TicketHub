@@ -8,6 +8,6 @@
 import Foundation
 
 protocol UpdateAndDeleteEventProtocol: AnyObject {
-    func updateEvent(for id: UUID, with event: TPEvent) -> Void
-    func deleteEvent(for id: UUID) -> Void
+    func updateEvent(for id: String, with event: TPEvent) -> Void
+    func deleteEvent(for id: String) -> Void
 }

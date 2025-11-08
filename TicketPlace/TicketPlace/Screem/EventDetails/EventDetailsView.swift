@@ -16,6 +16,10 @@ struct EventDetailsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: GlobalConfigurations.normalSpacing) {
+                Text(viewModel.event.title)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    
                 Text(viewModel.event.dateString)
                 
                 Divider()
@@ -48,7 +52,7 @@ struct EventDetailsView: View {
                 }
                 
             }
-            .navigationTitle(Text(viewModel.event.title))
+            .navigationTitle(Text("Editar Evento"))
             .padding(.horizontal)
             .onDisappear {
                 if !viewModel.isDeleted {
@@ -80,7 +84,7 @@ struct EventDetailsView: View {
 }
 
 #Preview {
-    let viewModel = EventDetailsViewModel(event: MockData.events.first!, service: HomeViewModel(networkService: NetworkService()))
+    let viewModel = EventDetailsViewModel(event: .init(), service: HomeViewModel(networkService: NetworkService()))
     
     NavigationStack {
         EventDetailsView(viewModel: viewModel)

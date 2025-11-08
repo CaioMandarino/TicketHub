@@ -12,4 +12,5 @@ enum EndpointEnum: String {
     case login = "login"
     case userInfo = "users/me"
     case events = "agenda/"
+    case newEvent = "eventos/"
 }
