@@ -36,6 +36,8 @@ struct EventDetailsView: View {
                 
                 TPPicker("Categoria", selection: $viewModel.event.category)
                 
+                TPDateTimeSelection(date: $viewModel.event.date)
+                
                 Divider()
                 
                 Section("Detalhes: ") {

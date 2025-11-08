@@ -22,6 +22,7 @@ extension TPEvent {
     var dateString: String {
         date.formatted(date: .abbreviated, time: .omitted)
     }
+
 }
 
 

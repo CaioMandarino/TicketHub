@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct TPDateTimeSelection: View {
-    @State private var allowTimeSelection: Bool = false
     @Binding var date: Date
-    
-    let firstRectangleCornerRadius = RectangleCornerRadii(
+
+    @State private var allowTimeSelection: Bool = false
+    @State private var showTimePicker: Bool = true
+    private let firstRectangleCornerRadius = RectangleCornerRadii(
         topLeading: 15,
         bottomLeading: 0,
         bottomTrailing: 0,
         topTrailing: 15
     )
-    
-    let secondRectangleCornerRadius = RectangleCornerRadii(
+    private let secondRectangleCornerRadius = RectangleCornerRadii(
         topLeading: 0,
         bottomLeading: 15,
         bottomTrailing: 15,
@@ -37,17 +37,44 @@ struct TPDateTimeSelection: View {
                     .stroke(lineWidth: 1)
             }
             
-            HStack {
-                Image(systemName: "clock")
-        
-                Toggle("Hora", isOn: $allowTimeSelection)
-                    .tint(.blue)
+            VStack {
+                makeToggleTimeSelectionAction()
             }
             .padding()
             .background {
                 UnevenRoundedRectangle(cornerRadii: secondRectangleCornerRadius)
                     .stroke(style: StrokeStyle(lineWidth: 1))
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func makeToggleTimeSelectionAction() -> some View {
+        
+        Toggle(isOn: $allowTimeSelection.animation()) {
+            HStack {
+                Image(systemName: "clock")
+                VStack {
+                    Text("Hora")
+                    
+                    if allowTimeSelection {
+                        Text(date.formatted(date: .omitted, time: .shortened))
+                            .foregroundStyle(.blue)
+                            .onTapGesture {
+                                withAnimation {
+                                    showTimePicker.toggle()
+                                }
+                            }
+                    }
+                }
+            }
+        }
+        .tint(.blue)
+        
+        if allowTimeSelection && showTimePicker {
+            DatePicker("", selection: $date, displayedComponents: .hourAndMinute)
+                .datePickerStyle(.wheel)
+                .transition(.identity)
         }
     }
 }
