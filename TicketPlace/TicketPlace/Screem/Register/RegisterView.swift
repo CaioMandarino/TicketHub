@@ -29,7 +29,7 @@ struct RegisterView: View {
             
             TPPasswordTextField(text: $viewModel.password, imageName: "lock.fill", prompt: Text("Digite sua senha"))
 
-            TPButton(title: "Criar Conta") {
+            TPButton(title: "Criar Conta", color: .gray.opacity(0.25)) {
                 Task {
                     if await viewModel.createAccount() {
                         coordinator.navigateToHomeView()

@@ -20,7 +20,7 @@ actor NetworkService: NetworkServiceProtocol {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         
-        let userData = User(email: email, password: password, name: username)
+        let userData = UserData(email: email, password: password, name: username)
         let jsonData = try encoder.encode(userData)
         
         request.httpMethod = HTTPMethodEnum.post.rawValue

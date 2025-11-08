@@ -9,9 +9,9 @@ import Foundation
 
 struct UserResponse: Decodable {
     let id: UUID
-    let email: String
-    let name: String
-    let idGroup: Int
+    var email: String
+    var name: String
+    var idGroup: Int
 
     enum CodingKeys: String, CodingKey {
         case email

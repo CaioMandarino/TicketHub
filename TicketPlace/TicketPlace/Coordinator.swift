@@ -49,7 +49,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createSettingsView() -> some View {
-        EmptyView() // TODO: Fazer a Settings View
+        return SettingsView(viewModel: SettingsViewModel(userInfo: homeViewModel.userInfo))
     }
     
     func createCreateEventView() -> some View {
@@ -65,7 +65,7 @@ final class Coordinator: ObservableObject {
     }
     
     func navigateToSettingsView() {
-        // TODO: Fazer a navegação para a tela de configuração
+        path.append(ScreenEnum.settings)
     }
     
     func navigateToRegisterView() {

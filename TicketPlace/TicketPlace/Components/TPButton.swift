@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TPButton: View {
     let title: String
+    let color: Color
     let action: () -> Void
     
     var body: some View {
@@ -21,7 +22,7 @@ struct TPButton: View {
                 .padding()
                 .background {
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(.gray.opacity(0.25))
+                        .fill(color)
                 }
                 .overlay {
                     RoundedRectangle(cornerRadius: 15)
@@ -37,7 +38,7 @@ struct TPButton: View {
 }
 
 #Preview {
-    TPButton(title: "Logar") {
+    TPButton(title: "Logar", color: .gray.opacity(0.25)) {
         
     }
     .padding(.horizontal)

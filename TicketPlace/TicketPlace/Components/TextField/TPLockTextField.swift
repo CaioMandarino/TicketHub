@@ -36,6 +36,7 @@ struct TPLockTextField: View {
             Image(systemName: isLocked ? "lock.fill" : "lock.open.fill")
                 .symbolEffect(.bounce, value: showEffect)
                 .opacity(0.7)
+                .frame(maxWidth: 30, maxHeight: 30)
         }
         .padding()
         .background {

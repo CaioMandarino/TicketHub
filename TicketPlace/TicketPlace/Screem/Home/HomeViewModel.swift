@@ -22,7 +22,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     weak var coordinator: Coordinator? = nil
-    private var userInfo: UserResponse? = nil
+    var userInfo: UserResponse? = nil
     private let networkService: any NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     

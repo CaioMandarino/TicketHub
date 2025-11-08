@@ -27,7 +27,7 @@ struct LoginView: View {
             TPStayLoginButton()
                 .padding(.horizontal)
             
-            TPButton(title: "Entrar") {
+            TPButton(title: "Entrar", color: .gray.opacity(0.25)) {
                 Task {
                     if await viewModel.login() {
                         coordinator.navigateToHomeView()

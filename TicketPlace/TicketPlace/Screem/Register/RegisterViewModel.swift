@@ -9,9 +9,9 @@ import Combine
 import Foundation
 
 final class RegisterViewModel: ObservableObject {
-    @Published var username: String = "user"
-    @Published var email: String = "user@gmail.com"
-    @Published var password: String = "1234567890"
+    @Published var username: String = ""
+    @Published var email: String = ""
+    @Published var password: String = ""
     
     private var networkService: any NetworkServiceProtocol
     
@@ -23,17 +23,20 @@ final class RegisterViewModel: ObservableObject {
         guard !username.isEmpty || !email.isEmpty || !password.isEmpty else {
             return false
         }
-        
-//        let user = User(email: password, password: email, nomeCompleto: username)
-        
+                
         do {
             try await networkService.createUser(username: username, password: password, email: email)
-                        
+            try await login()
             return true
         } catch {
             print("Problemas ao criar a conta")
             return false
         }
+    }
+    
+    
+    func login() async throws {
+        try await networkService.login(email: email, password: password)
     }
 }
 
