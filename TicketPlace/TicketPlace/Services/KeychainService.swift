@@ -18,6 +18,8 @@ struct KeychainService {
 
 
     static func save(_ value: String, account: String) throws {
+        try? delete(account: account)
+        
         let data = Data(value.utf8)
 
         // Query base

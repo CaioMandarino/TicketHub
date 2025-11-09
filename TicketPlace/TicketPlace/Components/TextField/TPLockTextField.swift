@@ -20,7 +20,7 @@ struct TPLockTextField: View {
             Image(systemName: imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 30)
+                .frame(maxWidth: 30, maxHeight: 30)
 
             if isLocked {
                 Text(text)

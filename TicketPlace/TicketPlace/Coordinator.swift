@@ -49,7 +49,7 @@ final class Coordinator: ObservableObject {
     }
     
     func createSettingsView() -> some View {
-        return SettingsView(viewModel: SettingsViewModel(userInfo: homeViewModel.userInfo))
+        return SettingsView(viewModel: SettingsViewModel(userInfo: homeViewModel.userInfo, networkService: networkService))
     }
     
     func createCreateEventView() -> some View {

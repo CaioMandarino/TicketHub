@@ -59,6 +59,7 @@ actor NetworkService: NetworkServiceProtocol {
         
         let token = try JSONDecoder().decode(LoginResponse.self, from: data)
         
+        
         try KeychainService.save(token.accessToken, account: KeychainKeysEnum.accessToken)
     }
     
@@ -183,6 +184,77 @@ actor NetworkService: NetworkServiceProtocol {
         
         if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
             throw URLError(.badServerResponse)
+        }
+    }
+    
+    @MainActor
+    func updateUsername(new username: String) async throws {
+        let url = baseURL + EndpointEnum.newUsername.path
+        var request = URLRequest(url: URL(string: url)!)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        let jsonData = try JSONEncoder().encode(Username(username: username))
+        
+        request.httpMethod = HTTPMethodEnum.put.rawValue
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    @MainActor
+    func updatePassword(old oldPassword: String, new newPassword: String) async throws {
+        print("oldPassword param: [\(oldPassword)]")
+        print("newPassword param: [\(newPassword)]")
+        
+        let url = baseURL + EndpointEnum.newPassword.path
+        var request = URLRequest(url: URL(string: url)!)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        let jsonData = try JSONEncoder().encode(Password(oldPassword: oldPassword, newPassword: newPassword))
+        
+        request.httpMethod = HTTPMethodEnum.put.rawValue
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    
+}
+
+extension NetworkService {
+    struct Username: Encodable {
+        let username: String
+        
+        enum CodingKeys: String, CodingKey {
+            case username = "nome_completo"
+        }
+    }
+    
+    struct Password: Encodable {
+        let oldPassword: String
+        let newPassword: String
+        
+        enum CodingKeys: String, CodingKey {
+            case oldPassword = "old_password"
+            case newPassword = "new_password"
         }
     }
 }

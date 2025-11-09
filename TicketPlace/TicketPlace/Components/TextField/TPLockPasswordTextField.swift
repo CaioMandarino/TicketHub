@@ -21,7 +21,7 @@ struct TPLockPasswordTextField: View {
             Image(systemName: imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 30)
+                .frame(maxWidth: 30, maxHeight: 30)
 
             if isLocked {
                 SecureField("PasswordTextField", text: $text)
@@ -51,7 +51,8 @@ struct TPLockPasswordTextField: View {
             Image(systemName: isLocked ? "lock.fill" : "lock.open.fill")
                 .symbolEffect(.bounce, value: showEffect)
                 .opacity(0.7)
-            
+                .frame(maxWidth: 30, maxHeight: 30)
+
         }
         .disabled(isLocked)
         .padding()
