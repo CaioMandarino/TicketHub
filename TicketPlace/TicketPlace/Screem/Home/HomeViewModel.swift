@@ -1,0 +1,121 @@
+//
+//  HomeViewModel.swift
+//  TicketPlace
+//
+//  Created by Caio Mandarino on 06/11/25.
+//
+
+import Combine
+import Foundation
+
+@MainActor
+final class HomeViewModel: ObservableObject {
+    @Published var searchText: String = ""
+    @Published var events: [TPEvent] = []
+    @Published var filteredEvents: [TPEvent] = []
+    @Published var alertMessage: String? = nil
+    @Published var isLoading: Bool = false
+    @Published var username: String? = nil
+    
+    var isFiltering: Bool {
+        !searchText.isEmpty
+    }
+    
+    weak var coordinator: Coordinator? = nil
+    var userInfo: UserResponse? = nil
+    private let networkService: any NetworkServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(networkService: some NetworkServiceProtocol) {
+        self.networkService = networkService
+        
+        observableSearchTextDidChange()
+    }
+    
+    func fetchUser() async {
+        do {
+            self.userInfo = try await networkService.getUserInfo()
+            username = userInfo?.name
+            
+        } catch URLError.userAuthenticationRequired {
+            print("Problemas na autenticação do usuário")
+            logout()
+
+        } catch {
+            print("Problemas ao buscar informações do usuário")
+        }
+    }
+    
+    func fetchEvents() async {
+        do {
+            let events = try await networkService.getEvents()
+            self.events = events.map { $0.convertToEvent() }
+            
+        } catch URLError.userAuthenticationRequired {
+            print("Problemas na autenticação do usuário")
+            logout()
+        } catch {
+            print("Problemas ao buscar eventos")
+        }
+    }
+    
+    func deleteEvent(for indexSet: IndexSet) {
+        for index in indexSet {
+            let event = events.remove(at: index)
+            
+            Task {
+                try await networkService.deleteEvent(id: event.id)
+            }
+        }
+    }
+    
+    private func observableSearchTextDidChange() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] searchText in
+                guard let self else { return }
+                
+                let term = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                if term.isEmpty {
+                    filteredEvents = events
+                } else {
+                    filteredEvents = events.filter { event in
+                        event.title.localizedCaseInsensitiveContains(term) || (event.location.localizedCaseInsensitiveContains(term))
+                    }
+                }
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func logout() {
+        try? KeychainService.delete(account: KeychainKeysEnum.accessToken)
+        coordinator?.navigateToLoginView()
+    }
+}
+
+extension HomeViewModel: UpdateAndDeleteEventProtocol {
+    func deleteEvent(for id: String) {
+        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
+
+        events.remove(at: index)
+        
+        Task {
+            try await networkService.deleteEvent(id: id)
+        }
+    }
+    
+    func updateEvent(for id: String, with newEvent: TPEvent) {
+        guard let index = events.firstIndex(where: { $0.id == id }) else { return }
+        
+        events[index] = newEvent
+        
+        Task {
+            try await networkService.updateEvent(for: newEvent)
+        }
+    }
+    
+    
+}
