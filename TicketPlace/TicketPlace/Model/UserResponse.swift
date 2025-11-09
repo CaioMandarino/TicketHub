@@ -19,4 +19,11 @@ struct UserResponse: Decodable {
         case id = "id_usuario"
         case idGroup = "id_grupo"
     }
+    
+    init(id: UUID, email: String, name: String, idGroup: Int = 2) {
+        self.id = id
+        self.email = email
+        self.name = name
+        self.idGroup = idGroup
+    }
 }

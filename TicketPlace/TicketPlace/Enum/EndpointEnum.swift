@@ -17,7 +17,8 @@ enum EndpointEnum {
     case deleteEvent(id: String)
     case newUsername
     case newPassword
-
+    case getUsers
+    
     var path: String {
         switch self {
         case .register:
@@ -38,6 +39,8 @@ enum EndpointEnum {
             return "users/me/profile"
         case .newPassword:
             return "users/me/password"
+        case .getUsers:
+            return "admin/users/search"
         }
     }
 }

@@ -17,7 +17,11 @@ final class SettingsViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var confirmationSave: Bool = false
     
-    let networkService: any NetworkServiceProtocol
+    private let networkService: any NetworkServiceProtocol
+    
+    var isAdmin: Bool {
+        userInfo.idGroup == 1
+    }
     
     init(userInfo: UserResponse?, networkService: some NetworkServiceProtocol) {
         self.networkService = networkService
@@ -26,7 +30,7 @@ final class SettingsViewModel: ObservableObject {
             self.userInfo = userInfo
             newUsername = userInfo.name
         } else {
-            self.userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 2)
+            self.userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 1)
             self.newUsername = ""
         }
         

@@ -31,10 +31,12 @@ struct LoginView: View {
                 Task {
                     if await viewModel.login() {
                         coordinator.navigateToHomeView()
-                    }
+                    } 
                 }
             }
             .padding(GlobalConfigurations.largePadding)
+            .disabled(!viewModel.isFormValid)
+            .opacity(!viewModel.isFormValid ? 0.5 : 1)
             
             Text("Ainda não tem uma conta?")
                 .font(.caption)
@@ -47,6 +49,12 @@ struct LoginView: View {
             
         }
         .padding(GlobalConfigurations.normalPadding)
+        .alert("Error", isPresented: Binding(value: $viewModel.alertMessage)) {
+            
+        } message: {
+            Text(viewModel.alertMessage ?? "Tente novamente mais tarde")
+        }
+
     }
 }
 

@@ -54,7 +54,11 @@ actor NetworkService: NetworkServiceProtocol {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
-            throw URLError(.badServerResponse)
+            if httpResponse.statusCode == 401 {
+                throw URLError(.userAuthenticationRequired)
+            } else {
+                throw URLError(.badServerResponse)
+            }
         }
         
         let token = try JSONDecoder().decode(LoginResponse.self, from: data)
@@ -236,7 +240,10 @@ actor NetworkService: NetworkServiceProtocol {
         }
     }
     
-    
+//    @MainActor
+//    func getAllUsers() async throws -> [Users] {
+//        
+//    }
 }
 
 extension NetworkService {

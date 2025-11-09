@@ -56,6 +56,20 @@ struct SettingsView: View {
             }
             
             //TODO: Admin
+            if viewModel.isAdmin {
+                ControlPanelView(title: "Painel de Controle") {
+                    ScrollView {
+                        ForEach(1...5, id: \.self) { _ in
+                            TPControlPanelRow(title: "", subtitle: "") {
+                                
+                            }
+                            .padding(.vertical)
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+                }
+            }
+            
             Spacer()
         }
         .padding()
