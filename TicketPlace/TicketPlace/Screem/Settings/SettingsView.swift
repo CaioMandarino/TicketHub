@@ -118,7 +118,9 @@ struct SettingsView: View {
                 
                 ForEach(viewModel.isFiltering ? viewModel.filteredUsers : viewModel.allUsers, id: \.self) { user in
                     TPControlPanelRow(title: user.name, subtitle: user.email) {
-                        viewModel.deleteUser(user)
+                        Task {
+                            await viewModel.deleteUser(user)
+                        }
                     }
                     .padding(.vertical)
                 }
@@ -137,7 +139,7 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 1)
+    let userInfo = UserResponse(id: UUID().uuidString, email: "", name: "", idGroup: 1)
     
     NavigationStack {
         SettingsView(viewModel: SettingsViewModel(userInfo: userInfo, networkService: NetworkService()))

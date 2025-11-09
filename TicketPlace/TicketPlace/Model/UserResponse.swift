@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserResponse: Decodable, Hashable {
-    let id: UUID
+    let id: String
     var email: String
     var name: String
     var idGroup: Int
@@ -20,7 +20,7 @@ struct UserResponse: Decodable, Hashable {
         case idGroup = "id_grupo"
     }
     
-    init(id: UUID, email: String, name: String, idGroup: Int = 2) {
+    init(id: String, email: String, name: String, idGroup: Int = 2) {
         self.id = id
         self.email = email
         self.name = name
@@ -30,7 +30,7 @@ struct UserResponse: Decodable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decode(String.self, forKey: .id)
         email = try container.decode(String.self, forKey: .email)
         name = try container.decode(String.self, forKey: .name)
         idGroup = try container.decodeIfPresent(Int.self, forKey: .idGroup) ?? 2

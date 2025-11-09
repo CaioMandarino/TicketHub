@@ -18,6 +18,7 @@ enum EndpointEnum {
     case newUsername
     case newPassword
     case getUsers
+    case deleteUser(id: String)
     
     var path: String {
         switch self {
@@ -41,6 +42,8 @@ enum EndpointEnum {
             return "users/me/password"
         case .getUsers:
             return "admin/users/search"
+        case .deleteUser(let id):
+            return "admin/users/\(id)"
         }
     }
 }

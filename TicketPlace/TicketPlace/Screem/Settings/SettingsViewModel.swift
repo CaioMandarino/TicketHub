@@ -14,7 +14,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var oldPassword: String = ""
     @Published var newUsername: String
     @Published var newPassword: String = "*********"
-    @Published var showAlert: Bool = false
+    @Published var alertMessage: String? = nil
     @Published var confirmationSave: Bool = false
     @Published var allUsers: [UserResponse] = []
     @Published var searchText: String = ""
@@ -38,7 +38,7 @@ final class SettingsViewModel: ObservableObject {
             self.userInfo = userInfo
             newUsername = userInfo.name
         } else {
-            self.userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 2)
+            self.userInfo = UserResponse(id: UUID().uuidString, email: "", name: "", idGroup: 2)
             self.newUsername = ""
         }
         
@@ -65,7 +65,7 @@ final class SettingsViewModel: ObservableObject {
                 oldPassword = newPassword
                 confirmationSave = true
             } catch {
-                showAlert = true
+                alertMessage = "Não foi possível atualizar a senha. Tente novamente."
                 return
             }
         }
@@ -76,7 +76,7 @@ final class SettingsViewModel: ObservableObject {
                 userInfo.name = newUsername
                 confirmationSave = true
             } catch {
-                showAlert = true
+                alertMessage = "Não foi possível atualizar o nome. Tente novamente."
             }
         }
     }
@@ -107,9 +107,14 @@ final class SettingsViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func deleteUser(_ user: UserResponse) {
+    func deleteUser(_ user: UserResponse) async {
         let userId = user.id
-        
-        // TODO: Faz o delete
+        do {
+            try await networkService.deleteUser(id: userId)
+            allUsers.removeAll { $0.id == userId }
+            
+        } catch {
+            alertMessage = "Não foi possível excluir o usuário. Tente novamente."
+        }
     }
 }

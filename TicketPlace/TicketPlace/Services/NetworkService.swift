@@ -274,6 +274,25 @@ actor NetworkService: NetworkServiceProtocol {
         
         return users
     }
+    
+    @MainActor
+    func deleteUser(id: String) async throws {
+        let url = baseURL + EndpointEnum.deleteUser(id: id).path
+        var request = URLRequest(url: URL(string: url)!)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        request.httpMethod = HTTPMethodEnum.delete.rawValue
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+    }
 }
 
 extension NetworkService {
