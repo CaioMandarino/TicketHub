@@ -16,8 +16,16 @@ final class SettingsViewModel: ObservableObject {
     @Published var newPassword: String = "*********"
     @Published var showAlert: Bool = false
     @Published var confirmationSave: Bool = false
+    @Published var allUsers: [UserResponse] = []
+    @Published var searchText: String = ""
+    @Published var filteredUsers: [UserResponse] = []
     
     private let networkService: any NetworkServiceProtocol
+    private var cancellables: Set<AnyCancellable> = []
+    
+    var isFiltering: Bool {
+        !searchText.isEmpty
+    }
     
     var isAdmin: Bool {
         userInfo.idGroup == 1
@@ -30,10 +38,11 @@ final class SettingsViewModel: ObservableObject {
             self.userInfo = userInfo
             newUsername = userInfo.name
         } else {
-            self.userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 1)
+            self.userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 2)
             self.newUsername = ""
         }
         
+        observableSearchTextDidChange()
     }
     
     func verifyPassword() async -> Bool {
@@ -72,5 +81,35 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
+    func getUsers() async {
+        let elements = try? await networkService.getAllUsers(term: "@")
+        self.allUsers = elements ?? []
+    }
     
+    private func observableSearchTextDidChange() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] searchText in
+                guard let self else { return }
+                
+                let term = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                if term.isEmpty {
+                    filteredUsers = allUsers
+                } else {
+                    filteredUsers = allUsers.filter { user in
+                        user.name.localizedCaseInsensitiveContains(term) || (user.email.localizedCaseInsensitiveContains(term))
+                    }
+                }
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    func deleteUser(_ user: UserResponse) {
+        let userId = user.id
+        
+        // TODO: Faz o delete
+    }
 }

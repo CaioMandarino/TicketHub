@@ -55,20 +55,23 @@ struct SettingsView: View {
 
             }
             
-            //TODO: Admin
             if viewModel.isAdmin {
-                ControlPanelView(title: "Painel de Controle") {
-                    ScrollView {
-                        ForEach(1...5, id: \.self) { _ in
-                            TPControlPanelRow(title: "", subtitle: "") {
-                                
+                Section("Administração: ") {
+                    List {
+                        NavigationLink {
+                            controlPainel()
+                        } label: {
+                            HStack {
+                                Image(systemName: "slider.horizontal.3")
+                                Text("Painel de controle")
                             }
-                            .padding(.vertical)
+                            .foregroundStyle(.foreground)
                         }
                     }
-                    .scrollIndicators(.hidden)
+                    .listStyle(.plain)
                 }
             }
+                
             
             Spacer()
         }
@@ -103,10 +106,44 @@ struct SettingsView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    private func controlPainel() -> some View {
+        ControlPanelView(title: "Painel de Controle") {
+            ScrollView {
+                if viewModel.allUsers.isEmpty {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                }
+                
+                ForEach(viewModel.isFiltering ? viewModel.filteredUsers : viewModel.allUsers, id: \.self) { user in
+                    TPControlPanelRow(title: user.name, subtitle: user.email) {
+                        viewModel.deleteUser(user)
+                    }
+                    .padding(.vertical)
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+        .task {
+            await viewModel.getUsers()
+        }
+        .refreshable {
+            await viewModel.getUsers()
+        }
+        .searchable(text: $viewModel.searchText, prompt: "Busque por usuários")
+        .ignoresSafeArea(edges: .bottom)
+    }
 }
 
 #Preview {
+    let userInfo = UserResponse(id: UUID(), email: "", name: "", idGroup: 1)
+    
     NavigationStack {
-        SettingsView(viewModel: SettingsViewModel(userInfo: nil, networkService: NetworkService()))
+        SettingsView(viewModel: SettingsViewModel(userInfo: userInfo, networkService: NetworkService()))
     }
 }
+
+/*
+ 
+ */

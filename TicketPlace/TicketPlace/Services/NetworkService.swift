@@ -216,9 +216,6 @@ actor NetworkService: NetworkServiceProtocol {
     
     @MainActor
     func updatePassword(old oldPassword: String, new newPassword: String) async throws {
-        print("oldPassword param: [\(oldPassword)]")
-        print("newPassword param: [\(newPassword)]")
-        
         let url = baseURL + EndpointEnum.newPassword.path
         var request = URLRequest(url: URL(string: url)!)
         
@@ -240,10 +237,43 @@ actor NetworkService: NetworkServiceProtocol {
         }
     }
     
-//    @MainActor
-//    func getAllUsers() async throws -> [Users] {
-//        
-//    }
+    @MainActor
+    func getAllUsers(term: String) async throws -> [UserResponse] {
+        
+        guard var components = URLComponents(string: baseURL + EndpointEnum.getUsers.path) else {
+            throw URLError(.badURL)
+        }
+        
+        components.queryItems = [
+            URLQueryItem(name: "q", value: term)
+        ]
+        
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        
+        guard let token = try? KeychainService.read(account: KeychainKeysEnum.accessToken) else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            if httpResponse.statusCode == 401 {
+                throw URLError(.userAuthenticationRequired)
+            } else {
+                throw URLError(.badServerResponse)
+            }
+        }
+        
+        let users = try JSONDecoder().decode(Array<UserResponse>.self, from: data)
+        
+        return users
+    }
 }
 
 extension NetworkService {

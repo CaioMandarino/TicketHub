@@ -12,8 +12,8 @@ struct ControlPanelView<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: GlobalConfigurations.normalSpacing) {
+            HStack {
                 Image(systemName: "slider.horizontal.3")
                 Text(title)
                     .font(.headline)
@@ -27,11 +27,11 @@ struct ControlPanelView<Content: View>: View {
         }
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(.ultraThinMaterial) // ou Color(.secondarySystemBackground)
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.ultraThinMaterial)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
+            RoundedRectangle(cornerRadius: 15)
                 .stroke(Color.primary.opacity(0.1), lineWidth: 1)
         )
         .shadow(radius: 4, y: 2)

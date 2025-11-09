@@ -16,5 +16,6 @@ protocol NetworkServiceProtocol: Actor {
     func updateEvent(for event: TPEvent) async throws
     func deleteEvent(id: String) async throws
     func updateUsername(new username: String) async throws
-    func updatePassword(old oldPassword: String, new newPassword: String) async throws 
+    func updatePassword(old oldPassword: String, new newPassword: String) async throws
+    func getAllUsers(term: String) async throws -> [UserResponse]
 }

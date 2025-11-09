@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserResponse: Decodable {
+struct UserResponse: Decodable, Hashable {
     let id: UUID
     var email: String
     var name: String
@@ -25,5 +25,14 @@ struct UserResponse: Decodable {
         self.email = email
         self.name = name
         self.idGroup = idGroup
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(UUID.self, forKey: .id)
+        email = try container.decode(String.self, forKey: .email)
+        name = try container.decode(String.self, forKey: .name)
+        idGroup = try container.decodeIfPresent(Int.self, forKey: .idGroup) ?? 2
     }
 }
