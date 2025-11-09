@@ -112,6 +112,7 @@ final class SettingsViewModel: ObservableObject {
         do {
             try await networkService.deleteUser(id: userId)
             allUsers.removeAll { $0.id == userId }
+            filteredUsers.removeAll { $0.id == userId }
             
         } catch {
             alertMessage = "Não foi possível excluir o usuário. Tente novamente."
