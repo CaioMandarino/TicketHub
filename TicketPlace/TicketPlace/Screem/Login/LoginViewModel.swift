@@ -28,7 +28,7 @@ final class LoginViewModel: ObservableObject {
         
         do {
             try await networkService.login(email: email, password: password)
-            let _ = try KeychainService.read(account: "access_token")
+            let _ = try KeychainService.read(account: KeychainKeysEnum.accessToken)
             
             return true
             

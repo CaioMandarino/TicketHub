@@ -30,6 +30,10 @@ struct TPPasswordTextField: View {
             
             Spacer()
             
+            Text("\(text.count)/8")
+                .foregroundStyle(.secondary)
+                .opacity(text.count > 8 ? 0 : 1)
+            
             Button {
                 showPassword.toggle()
             } label: {

@@ -49,7 +49,7 @@ struct CreateEventView: View {
             .padding(.horizontal)
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
-                    Button("Salvar", systemImage: "square.and.arrow.down", role: .confirm) {
+                    Button("Salvar", systemImage: "checkmark") {
                         Task {
                             if await viewModel.createEvent() {
                                 coordinator.navigateBack()

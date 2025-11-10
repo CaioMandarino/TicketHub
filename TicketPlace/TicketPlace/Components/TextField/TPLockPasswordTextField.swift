@@ -31,6 +31,10 @@ struct TPLockPasswordTextField: View {
             
             Spacer()
             
+            Text("\(text.count)/8")
+                .foregroundStyle(.secondary)
+                .opacity(text.count > 8 ? 0 : 1)
+            
             Button {
                 showPassword.toggle()
             } label: {
@@ -73,7 +77,7 @@ struct TPLockPasswordTextField: View {
 }
 
 #Preview {
-    @Previewable @State var text: String = "1234567890"
+    @Previewable @State var text: String = "1234560"
     @Previewable @State var isLocked: Bool = false
     
     VStack {
