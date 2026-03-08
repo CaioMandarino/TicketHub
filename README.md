@@ -1,6 +1,6 @@
 # TicketHub (TicketPlace iOS)
 
-Aplicativo iOS (SwiftUI) desenvolvido como **trabalho final de Laboratório de Banco de Dados**.  
+Aplicativo iOS (**SwiftUI**) desenvolvido como **trabalho final de Laboratório de Banco de Dados**.  
 Este repositório contém o **client iOS** (projeto Xcode: `TicketPlace`) que consome uma **API HTTP** (por padrão em `http://localhost:8000/`).
 
 ---
