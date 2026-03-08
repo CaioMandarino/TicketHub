@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		DA7C1B122F5E182700497060 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAE14E0B2EBCDA550089E2D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAE14E122EBCDA550089E2D8;
+			remoteInfo = TicketPlace;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		DA7C1B0E2F5E182700497060 /* TicketPlaceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicketPlaceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE14E132EBCDA550089E2D8 /* TicketPlace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketPlace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		DA7C1B0F2F5E182700497060 /* TicketPlaceUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TicketPlaceUITests;
+			sourceTree = "<group>";
+		};
 		DAE14E152EBCDA550089E2D8 /* TicketPlace */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TicketPlace;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DA7C1B0B2F5E182700497060 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAE14E102EBCDA550089E2D8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				DAE14E152EBCDA550089E2D8 /* TicketPlace */,
+				DA7C1B0F2F5E182700497060 /* TicketPlaceUITests */,
 				DAE14E142EBCDA550089E2D8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				DAE14E132EBCDA550089E2D8 /* TicketPlace.app */,
+				DA7C1B0E2F5E182700497060 /* TicketPlaceUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DA7C1B0D2F5E182700497060 /* TicketPlaceUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA7C1B142F5E182700497060 /* Build configuration list for PBXNativeTarget "TicketPlaceUITests" */;
+			buildPhases = (
+				DA7C1B0A2F5E182700497060 /* Sources */,
+				DA7C1B0B2F5E182700497060 /* Frameworks */,
+				DA7C1B0C2F5E182700497060 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA7C1B132F5E182700497060 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DA7C1B0F2F5E182700497060 /* TicketPlaceUITests */,
+			);
+			name = TicketPlaceUITests;
+			packageProductDependencies = (
+			);
+			productName = TicketPlaceUITests;
+			productReference = DA7C1B0E2F5E182700497060 /* TicketPlaceUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		DAE14E122EBCDA550089E2D8 /* TicketPlace */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAE14E1E2EBCDA570089E2D8 /* Build configuration list for PBXNativeTarget "TicketPlace" */;
@@ -77,9 +125,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					DA7C1B0D2F5E182700497060 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = DAE14E122EBCDA550089E2D8;
+					};
 					DAE14E122EBCDA550089E2D8 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -94,17 +146,27 @@
 			);
 			mainGroup = DAE14E0A2EBCDA550089E2D8;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DAE14E142EBCDA550089E2D8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				DAE14E122EBCDA550089E2D8 /* TicketPlace */,
+				DA7C1B0D2F5E182700497060 /* TicketPlaceUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DA7C1B0C2F5E182700497060 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAE14E112EBCDA550089E2D8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +177,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DA7C1B0A2F5E182700497060 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAE14E0F2EBCDA550089E2D8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +193,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		DA7C1B132F5E182700497060 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAE14E122EBCDA550089E2D8 /* TicketPlace */;
+			targetProxy = DA7C1B122F5E182700497060 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		DA7C1B152F5E182700497060 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23AK7X9G78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CaioMandarino.TicketPlaceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketPlace.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TicketPlace";
+			};
+			name = Debug;
+		};
+		DA7C1B162F5E182700497060 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23AK7X9G78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CaioMandarino.TicketPlaceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketPlace.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TicketPlace";
+			};
+			name = Release;
+		};
 		DAE14E1C2EBCDA570089E2D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -313,6 +434,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DA7C1B142F5E182700497060 /* Build configuration list for PBXNativeTarget "TicketPlaceUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA7C1B152F5E182700497060 /* Debug */,
+				DA7C1B162F5E182700497060 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DAE14E0E2EBCDA550089E2D8 /* Build configuration list for PBXProject "TicketPlace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
